@@ -10,7 +10,7 @@ Original images encoded to get the next image
 <!-- ![Result of the image generation process under VAEs after encoding then decoding](media_images_eval_x_given_z_images.png) -->
 <img src="media_images_eval_x_given_z_images.png" alt="Result of the image generation process under VAEs after encoding then decoding" width=400>
 
-Result of the image generation process under VAEs after encoding (with $q_\phi(z | x)$) then decoding (with $p_\theta(x|z)$) the latent 
+Result of the image generation process under VAEs after encoding (with q(z | x)) then decoding (with p(x|z)) the latent 
 
 <!-- ![Images sampled from the prior of the latent](media_images_generated_images.png) -->
 <img src="media_images_generated_images.png" alt="Images sampled from the prior of the latent" width=400>
