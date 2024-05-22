@@ -1,14 +1,17 @@
 # Reimplementation of VAE
 The purpose of this repositiory is to reimplement VAE to build familiarity with latent models and their loss functions. A side goal of this repositiory was to learn about hydra configs.
 
-![Original images encoded to get the next image](media_images_eval_x_noised_images_9_1248daac951a65645e0a.png)
+![Original images encoded to get the next image](media_images_eval_x_noised_images.png)
+
 Original images encoded to get the next image
 
-![Result of the image generation process under VAEs after encoding then decoding the result](media_images_eval_x_given_z_images_9_8f0f4b38067f75ea9f0d.png)
+![Result of the image generation process under VAEs after encoding then decoding](media_images_eval_x_given_z_images.png)
+
 Result of the image generation process under VAEs after encoding (with $q_\phi(z | x)$) then decoding (with $p_\theta(x|z)$) the latent 
 
 
-![Images sampled from the prior of the latent](media_images_generated_images_9_665f00e9103b37ee05bf.png)
+![Images sampled from the prior of the latent](media_images_generated_images.png)
+
 Images sampled from the prior of the latent
 
 
