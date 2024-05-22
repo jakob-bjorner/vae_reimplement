@@ -1,0 +1,4 @@
+image_HW: ${..image_HW}
+image_channels: ${..image_channels}
+prior_dim: ${..prior_dim}
+_target_: vae_reimplement.models.CNNDecoder

@@ -1,0 +1,80 @@
+defaults:
+ - encoder_model: linear_with_hidden
+ - decoder_model: simple_cnn
+ - override hydra/launcher: submitit_slurm
+ - _self_
+vae:
+  reconstruction_type: "MSE" # can be either MSE or LOGPROB log prob is only different if assume_ones_image_std is False
+  assume_ones_image_std: True
+  prior_epsilon: 1
+  beta_weight_on_kl: 1
+  prior_dim: ${..prior_dim}
+  encoder: ${..encoder_model}
+  decoder: ${..decoder_model}
+  image_HW: ${..image_HW}
+  image_channels: ${..image_channels}
+  _target_: vae_reimplement.vae.VAE
+logger: 
+  project: vae_reimplement
+  name: ${..run_name}
+datasetloaders:
+  epsilon_noise: 1
+  batch_size: 100
+  device: ${..device}
+  num_workers: 3 # cpus_per_task=2x (number of data workers + gpus_per_task) recommendation from https://github.com/facebookincubator/submitit/blob/main/submitit/slurm/slurm.py line300
+  _target_: vae_reimplement.dataset.Cifar10Loader
+trainer:
+  vae: ${..vae}
+  datasetloaders: ${..datasetloaders}
+  lr: 0.0005
+  epochs: 10
+  lr_scheduler_gamma: 0.9
+  device: ${..device}
+  logger: ???
+  _target_: vae_reimplement.trainer.Trainer
+run_name: ???
+image_HW: 32
+image_channels: 3
+prior_dim: 256
+device: cuda
+device_name: ???
+output_dir: ???
+device_type: a40
+
+hydra:
+  job:
+    config:
+      override_dirname:
+        item_sep: _
+  sweep:
+    dir: outputs
+    subdir: ${hydra.job.override_dirname}/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  run:
+    dir: outputs/${hydra.job.override_dirname}/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  launcher: # https://hydra.cc/docs/1.3/plugins/submitit_launcher/
+    submitit_folder: ${hydra.sweep.dir}/.submitit/%j
+    timeout_min: 2880
+    cpus_per_task: 6
+    gpus_per_node: null
+    tasks_per_node: 1
+    mem_gb: null
+    nodes: 1
+    _target_: hydra_plugins.hydra_submitit_launcher.submitit_launcher.SlurmLauncher
+    partition: overcap # kargo-lab
+    qos: short
+    # constraint: null
+    # gres: null
+    exclude: major,crushinator,nestor,voltron
+    # cpus_per_gpu: null # should i be using this over the cpus_per_task? No, its ok. see above slurm url thing on num_workers
+    # gpus_per_task: null
+    # mem_per_gpu: null
+    # mem_per_cpu: null
+    # account: null
+    # signal_delay_s: 120
+    # max_num_timeout: 0
+    additional_parameters:
+      gpus: ${....device_type}:1
+    array_parallelism: 20
+    # setup: null
+    # srun_args: null
+

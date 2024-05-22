@@ -1,0 +1,6 @@
+prior_epsilon 1 is good. this messes with the KL term but also the sampling of our prior distribution for doing sampling based loss on the log(p(x|z)) term.
+
+
+epsilon_noise bellow 20 is good. aka ppEps shouldn't be set on the eval dataset so that the eval is different than the trian. Train can be regularized, but the eval shouldn't be.
+
+
