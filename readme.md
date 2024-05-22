@@ -5,6 +5,7 @@ The purpose of this repositiory is to reimplement VAE to build familiarity with 
 
 Original images encoded to get the next image
 
+
 ![Result of the image generation process under VAEs after encoding then decoding](media_images_eval_x_given_z_images.png)
 
 Result of the image generation process under VAEs after encoding (with $q_\phi(z | x)$) then decoding (with $p_\theta(x|z)$) the latent 
